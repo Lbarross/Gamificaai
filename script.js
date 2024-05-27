@@ -108,26 +108,7 @@ function selecionarSlide(indiceSlide) {
 }
 
 let listaCases = [
-    // {
-    //     imagem: "https://unsplash.it/640/425?image=43",
-    //     descricao: "Uma empresa de tecnologia lança um desafio de gamificação onde os funcionarios devem propor e implementar ideias inovadoras."
-    // },
-
-    // {
-    //     imagem: "https://unsplash.it/640/425?image=43",
-    //     descricao: "Uma empresa de consultoria cria uma narrativa interativa de gamificação para seu programa de treinamento."
-    // },
-
-    // {
-    //     imagem: "https://unsplash.it/640/425?image=43",
-    //     descricao: "Uma empresa de vendas implementa uma competição gamificada entre equipes que competem pelo topo do ranking."
-    // },
-
-    // {
-    //     imagem: "https://unsplash.it/640/425image=23",
-    //     descricao: "Uma empresa de saúde promove o bem-estar dos funcionários através de um desafio de gamificação de condicionamento físico"
-    // },
-
+    
 ]
 
 function renderizarCases(){
@@ -151,3 +132,64 @@ function renderizarCases(){
 
     containerCards.innerHTML = template
 }
+
+function carregarCases (){
+
+    fetch("http://localhost:3000/cases")
+
+    .then( (resposta) => resposta.json())
+    .then ((dadosTratados) => {
+        console.log(dadosTratados)
+        listaCases = dadosTratados
+        renderizarCases ()
+    })
+    }
+
+    function solicitarOrcamento(event){
+        let valorNome = document.getElementById("campo-nome").value
+        let valorEmail = document.getElementById("campo-email").value
+        let valorDescricao = document.getElementById("campo-texto").value
+
+    //     console.log(valorNome, valorEmail, valorDescricao)
+
+    let dadosForm = {
+        nome: valorNome,
+        email: valorEmail,
+        descricao: valorDescricao
+    }
+
+    console.log(dadosForm);
+
+    fetch("http://localhost:3000/solicitacoes" , {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dadosForm)
+    })
+
+    .then(resposta => {
+        console.log(resposta);
+
+        // limpar os inputs
+        document.querySelector("#contato form").requestFullscreen()
+
+        // mostrar um alert de sucesso
+        alert("Solicitação enviada com sucesso!!!!😺")
+    })
+
+    // Erro
+
+    .catch(erro => {
+        console.log(erro);
+
+
+        alert("Erro na requisição 😿")
+
+
+    })
+
+    event.preventDefault()
+    
+
+    }
